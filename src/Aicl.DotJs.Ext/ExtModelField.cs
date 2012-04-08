@@ -19,7 +19,7 @@ namespace Aicl.DotJs.Ext
 		[Convert]
 		public object convert { 
 			get{
-				if (_convert==null && !string.IsNullOrEmpty(type) && type.Contains("date"))
+				if (_convert==null && !string.IsNullOrEmpty(type) &&  type.Contains(Config.GetJsType(typeof(DateTime))) )
 					_convert="function(v){return Aicl.Util.convertToDate(v);}";
 				return _convert;
 			}

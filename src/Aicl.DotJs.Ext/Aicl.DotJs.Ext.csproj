@@ -38,17 +38,26 @@
     <Compile Include="ExtModel.cs" />
     <Compile Include="ExtModelField.cs" />
     <Compile Include="NameAttribute.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="Store.cs" />
+    <Compile Include="ExtStore.cs" />
+    <Compile Include="List.cs" />
+    <Compile Include="ListColumn.cs" />
+    <Compile Include="Form.cs" />
+    <Compile Include="FormItem.cs" />
+    <Compile Include="Controller.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Common">
+    <Reference Include="System" />
+    <Reference Include="ServiceStack.Common, Version=3.5.5.43198, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\lib\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite">
+    <Reference Include="ServiceStack.OrmLite, Version=3.6.4.18604, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="ServiceStack.Text">
+    <Reference Include="ServiceStack.Text, Version=3.6.3.17751, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\lib\ServiceStack.Text.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
 </Project>

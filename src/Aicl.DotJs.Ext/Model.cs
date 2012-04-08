@@ -2,12 +2,13 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using ServiceStack.OrmLite;
 using ServiceStack.Common.Utils;
 using ServiceStack.Common.Extensions;
 using ServiceStack.Text;
 
-namespace Aicl.DotJs.Ext
+namespace Aicl.DotJs
 {
 	public class Model
 	{
@@ -33,12 +34,12 @@ namespace Aicl.DotJs.Ext
 		
 		public string OutputDirectory { get; set;}
 		
-		public T Write<T,TF>() 
+		public void Write<T,TF>() 
 			where T: new ()
 			where TF: new ()
 		{
 			if(string.IsNullOrEmpty( Define ))
-				Define= type.FullName;
+				Define= string.Format("model.{0}",type.Name);
 						
 			if(string.IsNullOrEmpty(Extend))
 				Extend= Config.Model;
@@ -54,19 +55,7 @@ namespace Aicl.DotJs.Ext
 				}
 			}
 			
-			config.Add("idProperty",IdProperty);
-			
-			if(string.IsNullOrEmpty(FileName))
-				FileName= type.Name+".js";
-			
-			if(string.IsNullOrEmpty(OutputDirectory))
-			{
-				OutputDirectory= Path.Combine(Directory.GetCurrentDirectory(),Config.ModelDirectory);
-				
-				if (!Directory.Exists(OutputDirectory))
-					Directory.CreateDirectory(OutputDirectory);
-			}	
-			
+			config.Add("idProperty",IdProperty);		
 			
 			Type tft= typeof(TF);
 			PropertyInfo namePI=null;
@@ -106,17 +95,17 @@ namespace Aicl.DotJs.Ext
 				TF field = new TF();
 				
 				if(namePI!=null)				
-					namePI.SetValue(field,  string.Format("'{0}'",pi.Name), new object[]{});
+					namePI.SetValue(field,pi.Name);
 				
 				if(typePI!=null)
-				typePI.SetValue(field, string.Format("'{0}'", Config.GetJsType(pi.PropertyType)), new object[]{});
+				typePI.SetValue(field, Config.GetJsType(pi.PropertyType));
 				
 				if(convertPI!=null){
 					var val = convertPI.GetValue(field, new object[]{} );
 					if(val!=null)
 					{
-						string convert= val.ToString().Replace("{","<<<<").Replace("}",">>>>");
-						convertPI.SetValue(field, convert , new object[]{});
+						string convert= val.ToString().Replace("{","<<>>").Replace("}",">><<");
+						convertPI.SetValue(field, convert );
 					}
 				}
 				fields.Add(field);
@@ -130,42 +119,30 @@ namespace Aicl.DotJs.Ext
 			{
 				object v ;
 				if(config.TryGetValue(pi.Name,out v))
-				   	pi.SetValue(objectWithProperties, pi.PropertyType==typeof(string)?
-					           string.Format("'{0}'",v):
-					           v,
-					           new object[]{});
+				   	pi.SetValue(objectWithProperties, v);
 			}
 					
+				
+			string r= objectWithProperties.SerializeAndFormat().Replace("<<>>","{").Replace(">><<","}");
+			r= string.Format( "Ext.define('{0}',{1});",Define, r);
 			
 			
+			if(string.IsNullOrEmpty(FileName))
+				FileName= type.Name+".js";
 			
-			var s = JsonSerializer.SerializeToString(objectWithProperties);
+			if(string.IsNullOrEmpty(OutputDirectory))
+			{
+				OutputDirectory= Path.Combine(Directory.GetCurrentDirectory(),Config.ModelDirectory);
+				
+				if (!Directory.Exists(OutputDirectory))
+					Directory.CreateDirectory(OutputDirectory);
+			}
 			
-			Console.WriteLine(s);
-			
-			s = objectWithProperties.SerializeAndFormat(); //JsonSerializer.SerializeToString(objectWithProperties).SerializeAndFormat();
-			
-			Console.WriteLine(s);
-			
-			s = objectWithProperties.ToJson();
-			
-			Console.WriteLine(s);
-			
-			Console.WriteLine( s.SerializeAndFormat() );
-			
-			s = objectWithProperties.ToJsv();
-			
-			Console.WriteLine(s);
-			
-			Console.WriteLine( s.SerializeAndFormat().Replace("<<<<","{").Replace(">>>>","}"));
-			//Console.WriteLine( s.SerializeAndFormat().Replace("<<<<","{").Replace(">>>>","}").Replace("\t\t\t\t","") );
-			//Console.WriteLine( s.SerializeAndFormat().Replace("<<<<","{").Replace(">>>>","}").Replace("\t\t\t\t","") );
-			//Console.WriteLine( s.SerializeAndFormat().Replace("<<<<","{").Replace(">>>>","}").Replace("\t\t","\t").Replace("\t\t\t","\t\t") );
-			
-			
-			
-			return objectWithProperties;
-			
+			using (TextWriter tw = new StreamWriter(Path.Combine(OutputDirectory, FileName)))
+			{
+				tw.Write(r);
+				tw.Close();
+			}
 				
 		}
 				
@@ -173,23 +150,3 @@ namespace Aicl.DotJs.Ext
 		
 	}
 }
-/*
- * Ext.define('AD.model.Company',{
-	extend: 'Ext.data.Model',
-	idProperty: 'Id',
-    fields:[
-    	{name: 'Id', type:'int'},
-    	{name: 'Name', type:'string'},
-    	{name: 'Turnover', type:'number'},
-    	{name: 'Started' ,  type :'date', 
-    			convert: function(v){ return  Aicl.Util.convertToDate(v)}},  				
-    	{name: 'Employees' ,  type:'int'},
-    	{name: 'CreatedDate' ,  type :'date', 
-    	   		convert: function(v){ return  Aicl.Util.convertToDate(v)}},
-    	{name: 'Guid' ,  type:'string'}
-    ]
-    
-});
-
-	
-*/
