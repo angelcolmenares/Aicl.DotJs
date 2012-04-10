@@ -46,6 +46,7 @@
     <Compile Include="Form.cs" />
     <Compile Include="FormItem.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

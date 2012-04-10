@@ -19,6 +19,8 @@ namespace Aicl.DotJs
 			this.type=type;
 		}
 		
+		public string AppName{get; set;}
+		
 		public string Define{get; set;}
 		
 		public string Extend{get; set;}
@@ -33,9 +35,11 @@ namespace Aicl.DotJs
 		
 		public void Write()
 		{
+			
+			if(string.IsNullOrEmpty(AppName)) AppName="App";
 		
 			if(string.IsNullOrEmpty( Define ))
-				Define= string.Format("store.{0}",type.Name);
+				Define= string.Format("{0}.store.{1}",AppName, type.Name);
 						
 			if(string.IsNullOrEmpty(Extend))
 				Extend= Config.Store;
@@ -43,7 +47,7 @@ namespace Aicl.DotJs
 			config.Add("extend",Extend);
 			
 			if(string.IsNullOrEmpty( Model ))
-				Model = string.Format("model.{0}",type.Name);			
+				Model = string.Format("{0}.model.{1}",AppName, type.Name);			
 			
 			config.Add("model",Model);
 			

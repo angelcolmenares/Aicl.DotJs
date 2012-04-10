@@ -9,11 +9,13 @@ namespace Aicl.DotJs
 		private static string modelDirectory = "model";
 		private static string storeDirectory = "store";
 		private static string viewDirectory = "view";
+		private static string controllerDirectory="controller";
 		
 		public static string Model =  "Ext.data.Model";
 		public static string Store =  "Aicl.data.Store";
 		public static string List =  "Ext.grid.Panel";
 		public static string Form = "Ext.form.Panel";
+		public static string Controller = "Ext.app.Controller";
 		public static string AppDirectory = "app";
 		public static string ModelDirectory{
 			get{
@@ -42,9 +44,16 @@ namespace Aicl.DotJs
 			set{
 				viewDirectory= value;
 			}
-		
 		}
 		
+		public static string ControllerDirectory{
+			get{
+				return Path.Combine(AppDirectory, controllerDirectory);
+			}
+			set{
+				controllerDirectory= value;
+			}
+		}
 		
 		public static string FormatInt{
 			get
@@ -73,28 +82,6 @@ namespace Aicl.DotJs
 		}
 		
 		
-		public static string ListDockedItems{
-			get
-			{
-				return @"[{
-            xtype: 'toolbar',
-            items: [{
-                text:'Agregar',
-                tooltip:'Agregar nuevo registro',
-                iconCls:'add',
-                disabled:true,
-                action: 'new'
-            },'-',{
-                text:'Borrar',
-                tooltip:'borrar registro seleccionado',
-                iconCls:'remove',
-                disabled:true,
-                action: 'delete'
-            }]		
-        }]";
-
-			}
-		}
 		
 		
 		public static string GetJsType(Type type){

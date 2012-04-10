@@ -22,6 +22,8 @@ namespace Aicl.DotJs
 			this.type=type;
 		}
 		
+		public string AppName { get; set;}
+		
 		public string Define { get; set;}
 		
 		public string Extend { get; set;}
@@ -38,8 +40,10 @@ namespace Aicl.DotJs
 			where T: new ()
 			where TF: new ()
 		{
+			if(string.IsNullOrEmpty(AppName)) AppName="App";
+			
 			if(string.IsNullOrEmpty( Define ))
-				Define= string.Format("model.{0}",type.Name);
+				Define= string.Format("{0}.model.{1}",AppName, type.Name);
 						
 			if(string.IsNullOrEmpty(Extend))
 				Extend= Config.Model;

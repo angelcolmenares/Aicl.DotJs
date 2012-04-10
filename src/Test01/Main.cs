@@ -25,6 +25,12 @@ namespace Test01
 			Form form = new Form(typeof(Demo));
 			form.Write();
 			
+			Controller controller = new Controller(typeof(Demo));
+			controller.Write();
+			
+			Application app = new Application(typeof(Demo));
+			app.Write();
+			
 			Console.WriteLine ("This is The End my friend!");
 		}
 	}

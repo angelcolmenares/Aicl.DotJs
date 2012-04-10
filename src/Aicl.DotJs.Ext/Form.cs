@@ -52,6 +52,8 @@ namespace Aicl.DotJs.Ext
 		
 		private Type type;
 		
+		public string AppName { get; set;}
+		
 		public string Define { get; set;}
 		
 		public string Extend { get; set;}
@@ -69,8 +71,10 @@ namespace Aicl.DotJs.Ext
 		
 		public void Write()
 		{
+			if(string.IsNullOrEmpty(AppName)) AppName="App";
+			
 			if(string.IsNullOrEmpty(Define))
-				Define= string.Format("view.{0}.form",type.Name);
+				Define= string.Format("{0}.view.{1}.Form",AppName, type.Name.ToLower());
 						
 			if(string.IsNullOrEmpty(Extend))
 				Extend= Config.Form;
