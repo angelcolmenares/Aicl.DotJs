@@ -9,48 +9,43 @@ namespace Aicl.DotJs.Ext
 		private string template=@"Ext.Loader.setConfig({{enabled: true}});
 Ext.Loader.setPath('{0}', '../app');
 Ext.require(['Ext.tip.*']);
+Ext.QuickTips.init();
+    
+Ext.application({{
+name: '{0}',
+appFolder: '../app',
 
-Ext.onReady(function(){{
-   
-    Ext.QuickTips.init();
-    
-    Ext.application({{
-    name: '{0}',
-    appFolder: '../app',
- 
-    launch: function(){{
-        Ext.create('Ext.form.Panel',{{
-    	width:950,
-        id:'panelModule',
-        //baseCls:'x-plain',
-        frame: true,
-        renderTo: 'module',
-        layout: {{
-            type: 'table',
-            columns: 2
-        }},
-        items:[
-        	{{xtype:'{1}list'}},
-        	{{
-				xtype:'panel',
-				height:352,
-				width:340,
-				baseCls:'x-plain',
-				layout: {{
-       				type: 'vbox'       
-    			}},
-				items:[
-					{{ xtype:'{1}form'}}
-				]	
-			}}
-        ]
-    	}});
+launch: function(){{
+    Ext.create('Ext.form.Panel',{{
+  	width:950,
+    id:'panelModule',
+    //baseCls:'x-plain',
+    frame: true,
+    renderTo: 'module',
+    layout: {{
+        type: 'table',
+        columns: 2
     }},
+    items:[
+     	{{xtype:'{1}list'}},
+       	{{
+			xtype:'panel',
+			height:352,
+			width:340,
+			baseCls:'x-plain',
+			layout: {{
+    		type: 'vbox'       
+    		}},
+			items:[
+				{{ xtype:'{1}form'}}
+			]	
+		}}
+    ]
+    }});
+}},
     
-    controllers: ['{2}']
+controllers: ['{2}']
     
-	}});
-	
 }});";
 		
 		private string html=@"<html>

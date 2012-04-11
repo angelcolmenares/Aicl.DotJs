@@ -12,7 +12,8 @@ namespace Aicl.DotJs.Ext
 		
 		private string template = @"Ext.define('{0}', {{
     extend: '{1}',
-    alias : '{2}',    
+    alias : '{2}',
+    ui:'default-framed',
     constructor: function(config){{
     	config=config|| {{}};
     	config.frame=config.frame==undefined?false: config.frame;
