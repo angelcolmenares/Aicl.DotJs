@@ -15,9 +15,15 @@ namespace Aicl.DotJs.Ext
 		
 		public string fieldLabel {get;set;}
 				
-		public bool? alllowBlank {get;set;}
+		public bool? allowBlank {get;set;}
 		
 		public string format { get; set;}
+		
+		public int? maxLength { get; set;}
+		
+		public bool? enforceMaxLength { get; set;}
+		
+		public string vtype { get; set;}
 		
 	}
 }

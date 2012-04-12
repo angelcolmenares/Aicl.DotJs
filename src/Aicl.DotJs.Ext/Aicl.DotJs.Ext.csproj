@@ -60,5 +60,6 @@
       <HintPath>..\..\lib\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using ServiceStack.OrmLite;
 using ServiceStack.Text;
+using ServiceStack.Common.Extensions;
 
 namespace Aicl.DotJs.Ext
 {
@@ -99,11 +101,27 @@ namespace Aicl.DotJs.Ext
 				
 				item.fieldLabel=string.Format("'{0}'",pi.Name);
 				
-				if( pi.PropertyType.ToString().StartsWith("System.Nullable"))
-				   item.alllowBlank=true;
+				if(!pi.PropertyType.ToString().StartsWith("System.Nullable") && pi.PropertyType!=typeof(string) )
+				   item.allowBlank=false;
 				   
-				
-				if( pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?))
+				if( pi.PropertyType == typeof(string) )
+				{
+					RequiredAttribute ra = pi.FirstAttribute<RequiredAttribute>();
+					if(ra != null)
+					{
+						item.allowBlank=false;
+					}
+					
+					StringLengthAttribute la = pi.FirstAttribute<StringLengthAttribute>();
+					if( la !=null )
+					{
+						item.maxLength= la.MaximumLength;
+						item.enforceMaxLength=true;
+					}
+					if(pi.Name.ToUpper().Contains("MAIL") || pi.Name.ToUpper().Contains("CORREO"))
+						item.vtype="'email'";
+				}
+				else if( pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?))
 				{
 					item.xtype="'datefield'";
 					item.format="'d.m.Y'";

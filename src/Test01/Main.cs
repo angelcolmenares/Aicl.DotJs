@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 using Aicl.DotJs;
@@ -40,11 +41,16 @@ namespace Test01
 		}
 		
 		public int Id { get; set;}
+		[StringLength(50)]
 		public string Name{get; set;}
 		public DateTime? Date{get; set;}
 		public int SomeInteger{get; set;}
 		public decimal SomeDecimal{get; set;}
 		public bool SomeBool{get; set;}
+		public string Mail{get; set;}
+		[StringLength(20)]
+		[Required]
+		public string Required{get; set;}
 		
 	}
 }
