@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Collections.Generic;
@@ -21,8 +22,9 @@ namespace Aicl.DotJs.Ext
     	config.frame=config.frame==undefined?false: config.frame;
     	config.margin=config.margin|| '0 0 0 5';
     	config.bodyStyle = config.bodyStyle ||'padding:10px 10px 0';
-    	config.width = config.width|| 320;
-        config.height = config.height|| 180;
+    	config.width = config.width|| 360;
+        config.height = config.height|| {4};
+        config.autoScroll= config.autoScroll==undefined? true: config.autoScroll,
 		config.fieldDefaults = config.fieldDefaults || {{
             msgTarget: 'side',
             labelWidth: 120,
@@ -147,6 +149,16 @@ namespace Aicl.DotJs.Ext
 				items.Add(item);
 			}
 			
+			int height = 80;
+			
+			int ic= items.Count(i=>i.xtype!="'hidden'");
+			
+			if(ic==2) height=140;
+			else if (ic==3) height=150;
+			else if (ic==4) height=160;
+			else if (ic>=5) height=35*ic;
+			if( height>350) height=350;
+			
 			string sItems= items.SerializeAndFormat().Replace("True","true").Replace("False","false");
 			
 			if(string.IsNullOrEmpty(OutputDirectory))
@@ -163,7 +175,7 @@ namespace Aicl.DotJs.Ext
 				
 			using (TextWriter tw = new StreamWriter(Path.Combine(OutputDirectory, FileName)))
 			{
-				tw.Write(string.Format(template, Define, Extend, Alias, sItems));
+				tw.Write(string.Format(template, Define, Extend, Alias, sItems, height));
 				tw.Close();
 			}
 			

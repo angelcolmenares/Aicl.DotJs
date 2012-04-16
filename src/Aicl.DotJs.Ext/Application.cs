@@ -17,7 +17,7 @@ appFolder: '../app',
 
 launch: function(){{
     Ext.create('Ext.form.Panel',{{
-  	width:950,
+  	width:990,
     id:'panelModule',
     //baseCls:'x-plain',
     frame: true,
@@ -31,7 +31,7 @@ launch: function(){{
        	{{
 			xtype:'panel',
 			height:352,
-			width:340,
+			width:440,
 			baseCls:'x-plain',
 			layout: {{
     		type: 'vbox'       
